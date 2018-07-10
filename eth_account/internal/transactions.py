@@ -80,6 +80,8 @@ TRANSACTION_DEFAULTS = {
     'to': b'',
     'value': 0,
     'data': b'',
+    'shardingflag': 0,
+    'via': b'',
     'chainId': None,
 }
 
@@ -94,6 +96,8 @@ TRANSACTION_FORMATTERS = {
     )),
     'value': hexstr_if_str(to_int),
     'data': hexstr_if_str(to_bytes),
+    'shardingflag': hexstr_if_str(to_int),
+    'via': hexstr_if_str(to_int),
     'v': hexstr_if_str(to_int),
     'r': hexstr_if_str(to_int),
     's': hexstr_if_str(to_int),
@@ -106,6 +110,8 @@ TRANSACTION_VALID_VALUES = {
     'to': is_empty_or_checksum_address,
     'value': is_int_or_prefixed_hexstr,
     'data': lambda val: isinstance(val, (int, str, bytes, bytearray)),
+    'shardingflag', is_int_or_prefixed_hexstr,
+    'via': is_empty_or_checksum_address,
     'chainId': lambda val: val is None or is_int_or_prefixed_hexstr(val),
 }
 
@@ -116,6 +122,8 @@ ALLOWED_TRANSACTION_KEYS = {
     'to',
     'value',
     'data',
+    'shardingflag',
+    'via',
     'chainId',  # set chainId to None if you want a transaction that can be replayed across networks
 }
 
@@ -161,6 +169,8 @@ UNSIGNED_TRANSACTION_FIELDS = (
     ('to', Binary.fixed_length(20, allow_empty=True)),
     ('value', big_endian_int),
     ('data', binary),
+    ('via', Binary.fixed_length(20, allow_empty=True)),
+    ('shardingflag', big_endian_int),
 )
 
 
